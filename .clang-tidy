@@ -1,0 +1,15 @@
+---
+Checks:                'clang-diagnostic-*,clang-analyzer-*,readability-*,bugprone-*,concurrency-*,modernize-*,performance-*,portability-*'
+WarningsAsErrors:      '*'
+HeaderFilterRegex:     ''
+AnalyzeTemporaryDtors: false
+FormatStyle:           file
+User:                  ste-pac
+CheckOptions:
+  - key:               readability-braces-around-statements.ShortStatementLines
+    value:             0
+  - key:               readability-else-after-return.WarnOnUnfixable
+    value:             true
+  - key:               readability-else-after-return.WarnOnConditionVariables
+    value:             true
+...

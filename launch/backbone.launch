@@ -1,0 +1,4 @@
+<launch>
+<node name="talker" pkg="backbone" type="talker"/>
+<node name="listener" pkg="backbone" type="listener" output="screen"/>
+</launch>

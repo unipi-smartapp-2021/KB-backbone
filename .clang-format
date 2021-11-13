@@ -1,0 +1,26 @@
+---
+BasedOnStyle: Google
+AlignConsecutiveMacros: 'true'
+AlignConsecutiveDeclarations: 'true'
+AllowAllConstructorInitializersOnNextLine: 'false'
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: 'false'
+AlwaysBreakBeforeMultilineStrings: 'false'
+BinPackArguments: 'false'
+BinPackParameters: 'false'
+BreakBeforeBinaryOperators: None
+BreakBeforeBraces: Attach
+ColumnLimit: '100'
+DerivePointerAlignment: 'false'
+ExperimentalAutoDetectBinPacking: 'false'
+IndentPPDirectives: AfterHash
+IndentWidth: '2'
+Language: Cpp
+ReflowComments: 'false'
+SpaceAfterTemplateKeyword: 'false'
+SpacesBeforeTrailingComments: '1'
+SpacesInSquareBrackets: 'false'
+TabWidth: '2'
+
+...
