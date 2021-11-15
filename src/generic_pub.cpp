@@ -10,11 +10,11 @@
 #include "ros/subscription_callback_helper.h"
 #include "sensor_msgs/JointState.h"
 #include "std_msgs/String.h"
+#include "subscriber.hpp"
 #include "topic_tools/shape_shifter.h"
 
 class Subscribable {
  public:
-  /// Mi preoccupa il fatto che stiamo vincolando la firma di Subscribe
   ///
   /// Comunque, questa funzione stavo pensando che non ha senso che sia nell'interfaccia
   /// perche` gli altri nodi (es quelli che faranno filtering su messaggio) non useranno gli stessi
@@ -46,29 +46,6 @@ class CustomSubscribable {
 class Publishable {
  public:
   virtual auto Publish() -> void = 0;
-};
-
-class FrequencyMultiplexerNode {
- public:
-  FrequencyMultiplexerNode(ros::NodeHandle&& source) : source_{source} {}
-  FrequencyMultiplexerNode(ros::NodeHandle const& source) : source_{source} {}
-
- private:
-  /// This method is really swag
-  auto Start() -> void {
-    // ...
-  }
-
-  ///
-  ros::NodeHandle source_;
-
-  // DK, sinceramente fa cagare ros ahah
-  std::vector<std::tuple<ros::Subscriber, ros::Rate>>
-      subs; /// Struttura per organizzare <Subscriber, Frequency>
-  ///
-  /// In caso un subscriber volesse registrarsi senza usare una frequenza, ma essere informato
-  /// quando un messaggio e` disponibile?
-  /// std::optional<Frequency>?
 };
 
 template<typename T>
