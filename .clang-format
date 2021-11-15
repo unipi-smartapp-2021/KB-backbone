@@ -22,5 +22,3 @@ SpaceAfterTemplateKeyword: 'false'
 SpacesBeforeTrailingComments: '1'
 SpacesInSquareBrackets: 'false'
 TabWidth: '2'
-
-...

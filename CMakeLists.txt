@@ -7,7 +7,7 @@ endif()
 project(backbone)
 
 ## Find catkin and any catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg topic_tools)
 
 ## Declare a catkin package
 catkin_package()
@@ -21,4 +21,6 @@ target_link_libraries(talker ${catkin_LIBRARIES})
 
 add_executable(listener src/listener.cpp)
 target_link_libraries(listener ${catkin_LIBRARIES})
+add_executable(generic_pub src/generic_pub.cpp)
+target_link_libraries(generic_pub ${catkin_LIBRARIES})
 # %EndTag(FULLTEXT)%
