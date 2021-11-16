@@ -16,11 +16,7 @@ catkin_package()
 include_directories(include)
 include_directories(${catkin_INCLUDE_DIRS})
 
-add_executable(talker src/talker.cpp)
-target_link_libraries(talker ${catkin_LIBRARIES})
+add_executable(temp_sensor src/temp_sensor.cpp)
+target_link_libraries(temp_sensor ${catkin_LIBRARIES})
 
-add_executable(listener src/listener.cpp)
-target_link_libraries(listener ${catkin_LIBRARIES})
-add_executable(generic_pub src/generic_pub.cpp)
-target_link_libraries(generic_pub ${catkin_LIBRARIES})
 # %EndTag(FULLTEXT)%

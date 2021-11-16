@@ -1,4 +1,3 @@
 <launch>
-<node name="talker" pkg="backbone" type="talker"/>
-<node name="listener" pkg="backbone" type="listener" output="screen"/>
+<node name="temp_sensor" pkg="backbone" type="temp_sensor" output="screen" />
 </launch>
