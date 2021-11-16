@@ -1,3 +1,4 @@
 <launch>
-<node name="temp_sensor" pkg="backbone" type="temp_sensor" output="screen" />
+<node name="throttleserver" pkg="backbone" type="echo_server" output="screen" />
+<node name="throttleclient" pkg="backbone" type="echo_client" />
 </launch>

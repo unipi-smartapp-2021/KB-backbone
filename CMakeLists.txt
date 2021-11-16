@@ -7,8 +7,18 @@ endif()
 project(backbone)
 
 ## Find catkin and any catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg topic_tools)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg message_generation topic_tools)
 
+
+add_service_files(
+  FILES
+  ThrottleTopic.srv
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 ## Declare a catkin package
 catkin_package()
 
@@ -16,7 +26,10 @@ catkin_package()
 include_directories(include)
 include_directories(${catkin_INCLUDE_DIRS})
 
-add_executable(temp_sensor src/temp_sensor.cpp)
-target_link_libraries(temp_sensor ${catkin_LIBRARIES})
+add_executable(echo_server src/echo_server.cpp)
+target_link_libraries(echo_server ${catkin_LIBRARIES})
+
+add_executable(echo_client src/echo_client.cpp)
+target_link_libraries(echo_client ${catkin_LIBRARIES})
 
 # %EndTag(FULLTEXT)%
