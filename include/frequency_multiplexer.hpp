@@ -5,13 +5,14 @@
 #include <cinttypes>
 #include <tuple>
 
+#include "backbone/ThrottleTopic.h"
 #include "config.hpp"
 
 namespace sa {
 
 namespace kb {
 
-template<typename I, typename T, typename U>
+template<typename T>
 class TopicFrequencyMultiplexer {
  public:
   TopicFrequencyMultiplexer(std::string const& topic)
@@ -28,10 +29,11 @@ class TopicFrequencyMultiplexer {
   }
 
  private:
-  auto RegisterToNode(T& request, U& response) -> bool {
+  auto RegisterToNode(backbone::ThrottleTopic::Request&  request,
+                      backbone::ThrottleTopic::Response& response) -> bool {
     auto publish_interval = ros::Duration(1.0 / request.rate);
     auto new_topic = name_ + "_" + std::to_string(subscribed_);
-    outputs_.emplace_back(handle_.advertise<I>(new_topic, 1), ros::Time::now(), publish_interval);
+    outputs_.emplace_back(handle_.advertise<T>(new_topic, 1), ros::Time::now(), publish_interval);
     ++subscribed_;
 
     ROS_INFO("Multiplexer) Created \"%s\" for rate \"%u\"", new_topic.c_str(), request.rate);
@@ -39,7 +41,7 @@ class TopicFrequencyMultiplexer {
     return true;
   }
 
-  auto ForwardMessage(boost::shared_ptr<I const> const& message) -> void {
+  auto ForwardMessage(boost::shared_ptr<T const> const& message) -> void {
     ROS_INFO("Multiplexer) Received \"%s\"", message->data.c_str());
     for (auto& tuple : outputs_) {
       auto& publish_time_guard = std::get<1>(tuple);
