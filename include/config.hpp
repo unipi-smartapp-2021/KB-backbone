@@ -1,13 +1,19 @@
-#ifndef SA_INCLUDE_CONFIG_H_
-#define SA_INCLUDE_CONFIG_H_
+#ifndef SA_KB_INCLUDE_CONFIG_H_
+#define SA_KB_INCLUDE_CONFIG_H_
 
 namespace sa {
 
-constexpr auto kLoopFrequency = 5UL;
-constexpr auto kChatterQueueSize = 128UL;
-constexpr auto kSubscriptionWaitTime = 125UL;
-constexpr auto kTestTopic = "Hello_World";
+namespace kb {
+
+constexpr auto kSourceRate = 10UL;
+constexpr auto kFirstClientRate = 5UL;
+constexpr auto kSecondClientRate = 2UL;
+constexpr auto kSubscriptionWaitTimeMs = 125UL;
+constexpr auto kTestTopic = "SensorTopic";
+constexpr auto kMillisInSecond = 1'000UL;
+
+} // namespace kb
 
 } // namespace sa
 
-#endif // SA_INCLUDE_CONFIG_H_
+#endif // SA_KB_INCLUDE_CONFIG_H_

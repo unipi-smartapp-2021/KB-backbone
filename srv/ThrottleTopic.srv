@@ -1,6 +1,7 @@
 # request fields
+
 uint32 rate
 ---
 #responsefields
 
-string new_topic
+string topic_name
