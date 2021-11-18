@@ -26,5 +26,6 @@
   ],
   "python.analysis.extraPaths": [
     "/opt/ros/noetic/lib/python3.9/site-packages"
-  ]
+  ],
+  "python.formatting.provider": "black"
 }

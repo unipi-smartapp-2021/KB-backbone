@@ -5,9 +5,11 @@ endif()
 
 project(backbone)
 
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg message_generation topic_tools)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg message_generation)
 
+catkin_python_setup()
 add_service_files(
+  DIRECTORY srv
   FILES
   ThrottleTopic.srv
 )
@@ -19,10 +21,15 @@ generate_messages(
 
 catkin_package()
 
+
 # For `clangd`, change it with the correct path
 # include_directories(/path_to_your_ros_ws/devel/include)
 include_directories(include)
 include_directories(${catkin_INCLUDE_DIRS})
+
+catkin_install_python(
+  PROGRAMS scripts/client.py scripts/server.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 add_executable(Source src/source.cpp)
 target_link_libraries(Source ${catkin_LIBRARIES})
