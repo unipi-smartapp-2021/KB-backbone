@@ -1,2 +1,0 @@
-<launch>
-  <node name="talker" pkg="backbone" type="source_node"/>
