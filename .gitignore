@@ -52,3 +52,4 @@ CATKIN_IGNORE
 .cache/
 .vscode
 build
+**__pycache__
