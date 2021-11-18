@@ -35,3 +35,8 @@ target_link_libraries(FirstClient ${catkin_LIBRARIES})
 
 add_executable(SecondClient src/second_client.cpp)
 target_link_libraries(SecondClient ${catkin_LIBRARIES})
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest)
+  #add_rostest(test/rostopic2.test)
+  catkin_add_gtest(freq_multiplexer_test test/test_frequency_multiplexer.cpp)
+endif()
