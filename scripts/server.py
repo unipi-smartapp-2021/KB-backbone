@@ -1,4 +1,4 @@
-from kb_backbone.frequency_multiplexer import FrequencyMultiplexer
+from topic_control.frequency_multiplexer import FrequencyMultiplexer
 import rospy
 from std_msgs.msg import String
 
