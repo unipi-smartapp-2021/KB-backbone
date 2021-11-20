@@ -1,0 +1,7 @@
+<launch>
+  <node name = "Source"       pkg = "backbone" type = "source.py" />
+  <node name = "Multiplexer"  pkg = "backbone" type = "server.py" />
+  <node name = "FirstClient"  pkg = "backbone" type = "client.py" output="screen"/>
+
+
+</launch>

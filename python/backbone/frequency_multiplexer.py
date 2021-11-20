@@ -1,9 +1,8 @@
-from typing import List, Tuple
+from typing import List, TypeVar
+
 import rospy
-from backbone.srv import ThrottleTopic
-from backbone.srv import ThrottleTopicRequest
-from backbone.srv import ThrottleTopicResponse
-from typing import TypeVar
+from backbone.rated_publisher import RatedPublisher
+from backbone.srv import ThrottleTopic, ThrottleTopicRequest, ThrottleTopicResponse
 
 T = TypeVar("T")
 
@@ -20,28 +19,23 @@ class FrequencyMultiplexer:
         self.input: rospy.Subscriber = rospy.Subscriber(
             topic, self.data_class, callback=self._forwardMessages
         )
-        self.outputs: List[Tuple[rospy.Publisher, rospy.Time, rospy.Duration]] = []
+        self.publishers: List[RatedPublisher] = []
         self.subscribed: int = 0
 
     def run(self) -> None:
         rospy.spin()
 
     def _registerToNode(self, req: ThrottleTopicRequest) -> ThrottleTopicResponse:
-        publish_interval = rospy.Duration(1.0 / req.rate)
         new_topic = f"{self.topic}_{self.subscribed}"
-        self.outputs.append(
-            (
-                rospy.Publisher(new_topic, self.data_class, queue_size=1),
-                rospy.Time.now(),
-                publish_interval,
-            )
+        self.publishers.append(
+            RatedPublisher(
+                rospy.Publisher(new_topic, self.data_class, queue_size=1), req.rate
+            ),
         )
         self.subscribed += 1
         res = ThrottleTopicResponse(new_topic)
         return res
 
     def _forwardMessages(self, msg: T) -> None:
-        for pub, time_guard, duration in self.outputs:
-            if rospy.Time.now() >= time_guard:
-                pub.publish(msg)
-                time_guard = rospy.Time.now() + duration
+        for pub in self.publishers:
+            pub.publish(msg)
