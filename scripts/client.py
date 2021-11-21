@@ -7,7 +7,6 @@ from backbone.srv import ThrottleTopic, ThrottleTopicResponse
 import std_msgs.msg
 import roslaunch
 
-
 def callback(message: std_msgs.msg.String):
     rospy.loginfo(f"client1: got {message.data}")
 

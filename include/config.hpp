@@ -5,7 +5,7 @@ namespace sa {
 
 namespace kb {
 
-constexpr auto kSourceRate = 10UL;
+  constexpr auto kSourceRate = 10UL; //!< test configuration 
 constexpr auto kFirstClientRate = 5UL;
 constexpr auto kSecondClientRate = 2UL;
 constexpr auto kSubscriptionWaitTimeMs = 125UL;

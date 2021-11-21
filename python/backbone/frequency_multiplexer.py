@@ -8,7 +8,16 @@ T = TypeVar("T")
 
 
 class FrequencyMultiplexer:
+    """! Class that define a Multiplexxing Publisher that send at a given frequency
+
+    """
     def __init__(self, topic: str, msg: T) -> None:
+        """! Construction of the class
+
+        @param topic the topic name of the publisher
+        @param msg the message type we are going to send
+        @return None
+        """
         rospy.init_node("freq_multiplexer")
         self.data_class: T = msg
         self.topic: str = topic
@@ -23,9 +32,18 @@ class FrequencyMultiplexer:
         self.subscribed: int = 0
 
     def run(self) -> None:
+        """! Base function that start the thread
+
+        """
         rospy.spin()
 
     def _registerToNode(self, req: ThrottleTopicRequest) -> ThrottleTopicResponse:
+        """! Function that register the node to the publisher
+
+        @param req the request of the Node
+
+        @return the responce of the Node
+        """
         new_topic = f"{self.topic}_{self.subscribed}"
         self.publishers.append(
             RatedPublisher(
@@ -37,5 +55,9 @@ class FrequencyMultiplexer:
         return res
 
     def _forwardMessages(self, msg: T) -> None:
+        """! Function that forward the message to every subscribed Node
+
+        @param msg the message to send
+        """
         for pub in self.publishers:
             pub.publish(msg)
