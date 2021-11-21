@@ -22,12 +22,6 @@ def main() -> int:
         topic = resp.topic_name
         rospy.Subscriber(topic, data_class=std_msgs.msg.String, callback=callback)
         rospy.loginfo(f"listening on topic {topic}")
-        logger = roslaunch.core.Node(
-            package="topic_metrics",
-            node_type=executable,
-            name="logger.py",
-            args=f"topic:={topic}",
-        )
         rospy.spin()
 
     except rospy.ServiceException as e:
