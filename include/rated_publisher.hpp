@@ -23,9 +23,9 @@ namespace kb {
 ///
 /// [`ros::Publisher`]: ros::Publisher
 ///
-/// ## Description
+/// # Description
 /// This class is particularly useful when there is a need to **limit** the amount of messages sent
-/// on a given topic in case the sending frequency is much higher than that of the processing node.
+/// on a given topic in case the sending frequency is much higher than that of the processing nodes.
 /// In this way, whenever an attempt is made to publish a message on the wrapped topic, if the minimum
 /// waiting time has not yet elapsed, the operation is **not** performed.
 ///

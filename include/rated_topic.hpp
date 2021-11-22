@@ -31,13 +31,20 @@ constexpr auto kMessagesKept = 1UL; /// Number of incoming/outgoing messages to 
 
 } // namespace
 
-/// TODO
-/// Wraps a topic, allowing its frequency multiplexing.
+/// A frequency multiplexer of a [topic ros] that allows the forwarding of messages received on it to
+/// an arbitrary number of subscribers, with different update rates.
+///
+/// [ros topic]: http://wiki.ros.org/Topics
 ///
 /// # Description
-/// This class can be *very* useful for limiting the amount of bandwidth used for passing messages
-/// on a particular topic, in case many different subscribers are interested in it but with
-/// different refresh rates.
+/// This class is particularly useful when there is a need to **limit** the communication overhead in
+/// case many nodes are interested in the same topic, but with different update rates. At the time of
+/// creation it is possible to specify a set of update frequencies that will be used to create as many
+/// new topics on which the subscribers will be distributed according to their preference.
+///
+/// To be able to subscribe to the managed topic it is sufficient to invoke the service identified as
+/// `"TopicName" + "Rated"` providing an appropriate `RateTopic` request message.
+/// TODO: finish this
 template<typename T>
 class RatedTopic {
  public:
