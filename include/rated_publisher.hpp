@@ -1,9 +1,10 @@
-/** \file rated_publisher.hpp
-
-    File that contains the class for the realization of a Publisher that send messages at a certain frequency
-
-    \author backbone_team
- */
+/// \file rated_publisher.hpp
+///
+/// File containing both definition and implementation of the [`RatedPublisher`] class.
+///
+/// [`RatedPublisher`]: ::RatedPublisher
+///
+/// \author backbone_team
 #ifndef SA_KB_INCLUDE_RATED_PUBLISHER_H_
 #define SA_KB_INCLUDE_RATED_PUBLISHER_H_
 
@@ -11,19 +12,10 @@
 
 #include "fail.hpp"
 
-/**
-   \addtogroup Smart_Application
-   @{
- */
-
-//! Namespace that identify the whole Smart Application project.
+/** \addtogroup Smart_Application @{ */
 namespace sa {
 
-/**
-     \addtogroup Knowledge_Base
-     @{
-   */
-//! Namespace that identify the Knowledge Base part of the project.
+/** \addtogroup Knowledge_Base @{ */
 namespace kb {
 
 /// A wrapper for a [`ros::Publisher`] that allows to specify a **maximum rate** of updates on the
@@ -121,9 +113,9 @@ class RatedPublisher {
 };
 
 } // namespace kb
-/** @} End of the kb group*/
+/** @} Knowledge_Base */
 
 } // namespace sa
-/** @} End of the sa group*/
+/** @} Smart_Application */
 
 #endif // SA_KB_INCLUDE_RATED_PUBLISHER_H_
