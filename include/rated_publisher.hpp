@@ -1,3 +1,9 @@
+/** \file rated_publisher.hpp
+
+    File that contains the class for the realization of a Publisher that send messages at a certain frequency
+
+    \author backbone_team
+ */
 #ifndef SA_KB_INCLUDE_RATED_PUBLISHER_H_
 #define SA_KB_INCLUDE_RATED_PUBLISHER_H_
 
