@@ -13,8 +13,19 @@
 
 #include "fail.hpp"
 
+/**
+   \addtogroup Smart_Application
+   @{
+ */
+
+//! Namespace that identify the whole Smart Application project.
 namespace sa {
 
+  /**
+     \addtogroup Knowledge_Base
+     @{
+   */
+  //! Namespace that identify the Knowledge Base part of the project.
 namespace kb {
 
 /** \brief Class for a publisher with a specific frequency rate
@@ -75,6 +86,13 @@ class RatedPublisher {
     return true;
   }
 
+  /** \brief Function that publish a message to all the subscribers returning how much delayed it was
+
+      \param message the message we want to publish
+
+      \return {0, -1} if we couldn't publish the message
+      \return ros::Duration how many milliseconds of delay there was between the message and the last update
+   */
   [[nodiscard]] auto PublishAndDelay(boost::shared_ptr<T const> const& message) -> ros::Duration {
     ROS_ASSERT(publisher_ != nullptr && message != nullptr);
 
@@ -96,7 +114,7 @@ class RatedPublisher {
 };
 
 } // namespace kb
-
+  /** @} End of the kb group*/
 } // namespace sa
-
+/** @} End of the sa group*/
 #endif // SA_KB_INCLUDE_RATED_PUBLISHER_H_
