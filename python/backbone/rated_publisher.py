@@ -1,4 +1,10 @@
-from typing import Optional, TypeVar
+"""! @package backbone.rated_publisher
+
+
+@author backbone_team
+"""
+
+from typing import TypeVar, Optional
 
 import rospy
 
@@ -10,7 +16,7 @@ class RatedPublisher:
 
     """
     def __init__(self, publisher: rospy.Publisher, rate: int) -> None:
-        """! Constructor of the class
+        """! Initializer of the class
 
         @param publisher the publisher we are trasforming in a rated one
         @param rate the frequency rate at wich we want to update our subscribers

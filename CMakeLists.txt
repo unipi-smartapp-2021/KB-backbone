@@ -21,7 +21,6 @@ generate_messages(
 
 catkin_package()
 
-
 # For `clangd`, change it with the correct path
 # include_directories(/path_to_your_ros_ws/devel/include)
 include_directories(include)

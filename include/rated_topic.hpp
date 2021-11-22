@@ -1,3 +1,10 @@
+/// \file rated_topic.hpp
+///
+/// File containing both definition and implementation of the [`RatedTopic`] class.
+///
+/// [`RatedTopic`]: ::RatedTopic
+///
+/// \author backbone_team
 #ifndef SA_KB_INCLUDE_RATED_TOPIC_H_
 #define SA_KB_INCLUDE_RATED_TOPIC_H_
 
@@ -10,33 +17,37 @@
 
 #include "backbone/RateTopic.h"
 #include "config.hpp"
-#include "fail.hpp"
 #include "rated_publisher.hpp"
 
+/** \addtogroup Smart_Application @{ */
 namespace sa {
 
+/** \addtogroup Knowledge_Base @{ */
 namespace kb {
 
 namespace {
 
-/// Number of incoming messages to keep
-constexpr auto kMessagesKept = 1UL;
+constexpr auto kMessagesKept = 1UL; /// Number of incoming/outgoing messages to keep
 
 } // namespace
 
+/// TODO
 /// Wraps a topic, allowing its frequency multiplexing.
 ///
-/// ## Description
+/// # Description
 /// This class can be *very* useful for limiting the amount of bandwidth used for passing messages
 /// on a particular topic, in case many different subscribers are interested in it but with
 /// different refresh rates.
 template<typename T>
 class RatedTopic {
  public:
-  using DebugMessage = std_msgs::Duration;
+  using DebugMessage = std_msgs::Duration; //!< How much delay a message had when we send it
 
+  /// TODO
   ///
+  /// # Arguments
   ///
+  /// # Failures
   ///
   RatedTopic(std::string const&           topic,
              std::vector<unsigned> const& rates,
@@ -50,6 +61,7 @@ class RatedTopic {
     if (rates.empty()) {
       sa::kb::Fail("No rate provided");
     }
+
     if (!std::is_sorted(rates.begin(), rates.end())) {
       sa::kb::Fail("Wrong rates provided");
     }
@@ -61,7 +73,8 @@ class RatedTopic {
     }
   }
 
-  /// Handles properly both incoming requests and messages.
+  /// TODO
+  ///
   inline auto Run() -> void {
     ros::spin();
   }
@@ -70,6 +83,10 @@ class RatedTopic {
   using Request = backbone::RateTopic::Request;
   using Response = backbone::RateTopic::Response;
 
+  /// TODO
+  ///
+  /// # Arguments
+  ///
   auto HandleSubscribe(Request& in, Response& out) -> bool {
     auto upper_bound = std::upper_bound(
         rates_.begin(), rates_.end(), in.rate, [](auto const& a, auto const& b) { return a <= b; });
@@ -81,6 +98,10 @@ class RatedTopic {
     return true;
   }
 
+  /// TODO
+  ///
+  /// # Arguments
+  ///
   auto ForwardMessage(boost::shared_ptr<T const> const& to_forward) -> void {
     if (debugger_.getNumSubscribers() == 0) {
       for (auto& publisher : publishers_) {
@@ -106,17 +127,19 @@ class RatedTopic {
     }
   }
 
-  std::string const                      name_;         //!< the name of the Service
-  std::vector<unsigned> const            rates_;        //!< array of who is subscribed to us
-  ros::NodeHandle                        handle_;       //!< the handler of the node
-  ros::ServiceServer                     subscribe_;    //!<
-  ros::Subscriber                        input_;        //!< the subscriber
-  std::vector<sa::kb::RatedPublisher<T>> publishers_{}; //!< array of who is subscribed to us
-  ros::Publisher                         debugger_;     //!<
+  std::string const                      name_;         /// TODO
+  std::vector<unsigned> const            rates_;        /// TODO
+  ros::NodeHandle                        handle_;       /// TODO
+  ros::ServiceServer                     subscribe_;    /// TODO
+  ros::Subscriber                        input_;        /// TODO
+  std::vector<sa::kb::RatedPublisher<T>> publishers_{}; /// TODO
+  ros::Publisher                         debugger_;     /// TODO
 };
 
 } // namespace kb
+/** @} Knowledge_Base */
 
 } // namespace sa
+/** @} Smart_Application */
 
 #endif // SA_KB_INCLUDE_RATED_TOPIC_H_
