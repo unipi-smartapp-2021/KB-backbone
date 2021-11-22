@@ -3,22 +3,22 @@
 
 from sys import executable
 import rospy
-from backbone.srv import ThrottleTopic, ThrottleTopicResponse
+from backbone.srv import RateTopic, RateTopicResponse
 import std_msgs.msg
 import roslaunch
 
-def callback(message: std_msgs.msg.String):
+def callback(message: std_msgs.msg.String) -> None:
     rospy.loginfo(f"client1: got {message.data}")
 
 
 def main() -> int:
     rospy.init_node("client_test")
-    rospy.wait_for_service("test_topicMultiplexer")
+    rospy.wait_for_service("test_topicRated")
     try:
-        throttletopic = rospy.ServiceProxy("test_topicMultiplexer", ThrottleTopic)
-        resp: ThrottleTopicResponse = throttletopic(2)
-        print(f"got new topic {resp.topic_name}")
-        topic = resp.topic_name
+        throttletopic = rospy.ServiceProxy("test_topicRated", RateTopic)
+        resp: RateTopicResponse = throttletopic(5)
+        print(f"got new topic {resp.topic}")
+        topic = resp.topic
         rospy.Subscriber(topic, data_class=std_msgs.msg.String, callback=callback)
         rospy.loginfo(f"listening on topic {topic}")
         rospy.spin()

@@ -1,4 +1,4 @@
-from typing import TypeVar
+from typing import Optional, TypeVar
 
 import rospy
 
@@ -16,8 +16,8 @@ class RatedPublisher:
         @param rate the frequency rate at wich we want to update our subscribers
         """
         self.publisher = publisher
-        self.interval = 1.0 / rate
-        self.next_update = rospy.get_time()
+        self.interval = rospy.Duration(1.0 / rate)
+        self.next_update = rospy.Time()
 
     def get_num_subscribers(self) -> int:
         """! Function that tell how many subscribers we have
@@ -42,10 +42,20 @@ class RatedPublisher:
         @return False if we don't have any subscribers
         @return False if it's not time for the update yet
         """
-        now = rospy.get_time()
+        now = rospy.Time.now()
         if self.get_num_subscribers() == 0 or now < self.next_update:
             return False
         else:
             self.publisher.publish(msg)
             self.next_update = now + self.interval
             return True
+   
+    def publish_and_delay(self,msg: T) -> Optional[rospy.Duration]:
+        now = rospy.Time.now()
+        if self.get_num_subscribers() == 0 or now < self.next_update:
+            return None
+        else:
+            self.publisher.publish(msg)
+            delay = rospy.Duration(0,0) if self.next_update.to_nsec() == 0 else now -self.next_update
+            self.next_update = now + self.interval
+            return delay

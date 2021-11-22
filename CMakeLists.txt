@@ -28,7 +28,7 @@ include_directories(include)
 include_directories(${catkin_INCLUDE_DIRS})
 
 catkin_install_python(
-  PROGRAMS scripts/client.py scripts/server.py scripts/source.py
+  PROGRAMS scripts/client.py scripts/server.py scripts/source.py scripts/debugger.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 add_executable(Source src/source.cpp)

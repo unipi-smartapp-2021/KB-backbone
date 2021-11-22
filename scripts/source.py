@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import rospy
 import std_msgs.msg
 
