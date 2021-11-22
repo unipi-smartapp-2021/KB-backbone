@@ -18,7 +18,6 @@ class FrequencyMultiplexer:
         @param msg the message type we are going to send
         @return None
         """
-        rospy.init_node("freq_multiplexer")
         self.data_class: T = msg
         self.topic: str = topic
         self.name: str = f"{topic}Multiplexer"
