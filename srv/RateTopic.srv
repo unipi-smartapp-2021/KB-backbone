@@ -4,4 +4,4 @@ uint32 rate
 ---
 #responsefields
 
-string topic_name
+string topic

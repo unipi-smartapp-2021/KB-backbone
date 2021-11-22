@@ -1,12 +1,13 @@
 #include <std_msgs/String.h>
 
 #include "config.hpp"
-#include "frequency_multiplexer.hpp"
+#include "rated_topic.hpp"
 
 auto main(int argc, char* argv[]) -> int {
   ros::init(argc, argv, "Multiplexer");
 
-  auto multiplexer = sa::kb::TopicFrequencyMultiplexer<std_msgs::String>(sa::kb::kTestTopic);
+  auto rates = std::vector<unsigned>({1, 5});
+  auto multiplexer = sa::kb::RatedTopic<std_msgs::String>(sa::kb::kTestTopic, rates);
   multiplexer.Run();
 
   return EXIT_SUCCESS;

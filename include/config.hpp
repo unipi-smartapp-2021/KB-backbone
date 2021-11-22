@@ -5,9 +5,9 @@ namespace sa {
 
 namespace kb {
 
-  constexpr auto kSourceRate = 10UL; //!< test configuration 
-constexpr auto kFirstClientRate = 5UL;
-constexpr auto kSecondClientRate = 2UL;
+constexpr auto kSourceRate = 30UL;
+constexpr auto kFirstClientRate = 1UL;
+constexpr auto kSecondClientRate = 4UL;
 constexpr auto kSubscriptionWaitTimeMs = 125UL;
 constexpr auto kTestTopic = "SensorTopic";
 constexpr auto kMillisInSecond = 1'000UL;

@@ -11,7 +11,7 @@ catkin_python_setup()
 add_service_files(
   DIRECTORY srv
   FILES
-  ThrottleTopic.srv
+  RateTopic.srv
 )
 
 generate_messages(
@@ -42,3 +42,6 @@ target_link_libraries(FirstClient ${catkin_LIBRARIES})
 
 add_executable(SecondClient src/second_client.cpp)
 target_link_libraries(SecondClient ${catkin_LIBRARIES})
+
+add_executable(Debugger src/debugger.cpp)
+target_link_libraries(Debugger ${catkin_LIBRARIES})

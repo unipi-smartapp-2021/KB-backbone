@@ -3,4 +3,5 @@
   <node name = "Multiplexer"  pkg = "backbone" type = "Multiplexer"  output = "screen"/>
   <node name = "FirstClient"  pkg = "backbone" type = "FirstClient"  output = "screen"/>
   <node name = "SecondClient" pkg = "backbone" type = "SecondClient" output = "screen"/>
+  <node name = "Debugger"     pkg = "backbone" type = "Debugger"     output = "screen"/>
 </launch>

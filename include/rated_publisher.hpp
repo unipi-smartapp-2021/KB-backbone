@@ -11,74 +11,10 @@ namespace sa {
 
 namespace kb {
 
-namespace {
-
-constexpr auto kDelayHistorySize = 8UL;
-
-}
-
-  /** \brief Class that save the history of the messages arrived with delays
-
-   */
-class DelayHistory {
- public:
-  /** \brief base construct of the class
-
-      \param the max capacity of the stored delayed messages
-   */
-  DelayHistory(std::uint32_t capacity)
-      : capacity_{capacity},
-        durations_{std::make_unique<ros::Duration[]>(capacity_)} {
-    if (capacity_ == 0 || durations_ == nullptr) {
-      sa::kb::Fail("Cannot create DelayHistory");
-    }
-  }
-
-  /** \brief Function that save a delay  
-
-      \param value the delay of the currently pushed message
-   */
-  inline auto Push(ros::Duration const& value) -> void {
-    durations_[pushed_ % capacity_] = value;
-    ++pushed_;
-  }
-
-  /** \brief Function that save a delay
-
-      \param value the delay of the currently pushed message
-   */
-  inline auto Push(ros::Duration&& value) -> void {
-    durations_[pushed_ % capacity_] = value;
-    ++pushed_;
-  }
-
-  /** \brief Function that calculate the mean of the delays
-
-      \return the mean of all the currents durations
-   */
-  [[nodiscard]] auto Mean() const -> ros::Duration {
-    if (pushed_ == 0) {
-      return {0, 0};
-    }
-
-    auto const size = std::min(capacity_, pushed_);
-    auto       total = ros::Duration(0, 0);
-    for (auto i = 0UL; i < size; ++i) {
-      total += durations_[i];
-    }
-    return {0, static_cast<int32_t>(total.toNSec() / size)};
-  }
-
- private:
-  std::uint32_t const              capacity_; //!< the total capacity of the History
-  std::unique_ptr<ros::Duration[]> durations_;//!< the array of Duration of the pushed messages
-  std::uint32_t                    pushed_{}; //!< the number of total pushed messages
-};
-
-template<typename T>
 /** \brief Class for a publisher with a specific frequency rate
 
  */
+template<typename T>
 class RatedPublisher {
  public:
   /** \brief base constructor
@@ -86,11 +22,9 @@ class RatedPublisher {
       \param publisher the publisher we use
       \param rate the rate at witch we want to update our subscribers
    */
-  RatedPublisher(ros::Publisher const& publisher, std::uint32_t rate)
+  RatedPublisher(ros::Publisher const& publisher, unsigned rate)
       : publisher_{publisher},
-        update_gap_{1.0 / rate},
-        expected_next_update_{ros::Time::now()},
-        delays_{sa::kb::kDelayHistorySize} {
+        update_gap_{1.0 / rate} {
     if (publisher_ == nullptr) {
       sa::kb::Fail("Invalid publisher provided");
     }
@@ -114,14 +48,6 @@ class RatedPublisher {
     return publisher_.getTopic();
   }
 
-  /** \brief Function that tell what is the average duration of the messages
-
-      \return the mean of the delays of the current messages
-   */
-  [[nodiscard]] auto MovingAverageDelay() const -> ros::Duration {
-    return delays_.Mean();
-  }
-
   /** \brief Function that publish a message and send it to all the subscribers
 
       \param message the message we want to publish
@@ -134,21 +60,33 @@ class RatedPublisher {
     ROS_ASSERT(publisher_ != nullptr && message != nullptr);
 
     auto now = ros::Time::now();
-    if (!this->HasSubscribers() || now < expected_next_update_) {
+    if (!this->HasSubscribers() || now < next_update_) {
       return false;
     }
-    publisher_.publish(message);
 
-    delays_.Push(now - expected_next_update_);
-    expected_next_update_ = now + update_gap_;
+    publisher_.publish(message);
+    next_update_ = now + update_gap_;
     return true;
   }
 
+  [[nodiscard]] auto PublishAndDelay(boost::shared_ptr<T const> const& message) -> ros::Duration {
+    ROS_ASSERT(publisher_ != nullptr && message != nullptr);
+
+    auto now = ros::Time::now();
+    if (!this->HasSubscribers() || now < next_update_) {
+      return {0, -1};
+    }
+
+    publisher_.publish(message);
+    auto delay = next_update_.toNSec() == 0 ? ros::Duration(0, 0) : now - next_update_;
+    next_update_ = now + update_gap_;
+    return delay;
+  }
+
  private:
-  ros::Publisher const publisher_; //!< the publisher we are ratoing
-  ros::Duration const  update_gap_; //!< the rate at wich we want to update
-  ros::Time            expected_next_update_; //!< the time of the next update
-  sa::kb::DelayHistory delays_; //!< the array of delays
+  ros::Publisher const publisher_;   //!< the publisher we are ratoing
+  ros::Duration const  update_gap_;  //!< the rate at wich we want to update
+  ros::Time            next_update_; //!< the time of the next update
 };
 
 } // namespace kb
