@@ -1,3 +1,9 @@
+/** \file rated_topic.hpp
+
+    File that contains the class for the Topic with a frequency rate
+
+    \author backbone_team
+ */
 #ifndef SA_KB_INCLUDE_RATED_TOPIC_H_
 #define SA_KB_INCLUDE_RATED_TOPIC_H_
 
@@ -13,31 +19,46 @@
 #include "fail.hpp"
 #include "rated_publisher.hpp"
 
+/**
+   \addtogroup Smart_Application
+   @{
+ */
+
+//! Namespace that identify the whole Smart Application project 
 namespace sa {
 
+  /**
+     \addtogroup Knowledge_Base
+     @{
+   */
+
+  //! Namespace that identify the Knowledge Base part of the project 
 namespace kb {
 
 namespace {
 
-/// Number of incoming messages to keep
-constexpr auto kMessagesKept = 1UL;
+  constexpr auto kMessagesKept = 1UL; //!< Number of incoming messages to keep
 
 } // namespace
 
-/// Wraps a topic, allowing its frequency multiplexing.
-///
-/// ## Description
-/// This class can be *very* useful for limiting the amount of bandwidth used for passing messages
-/// on a particular topic, in case many different subscribers are interested in it but with
-/// different refresh rates.
+/** \brief Wraps a topic, allowing its frequency multiplexing.
+
+    ## Description
+    This class can be *very* useful for limiting the amount of bandwidth used for passing messages
+    on a particular topic, in case many different subscribers are interested in it but with
+    different refresh rates.
+*/
 template<typename T>
 class RatedTopic {
  public:
-  using DebugMessage = std_msgs::Duration;
+  using DebugMessage = std_msgs::Duration; //!< How much delay a message had when we send it
 
-  ///
-  ///
-  ///
+  /** \brief Constructor of the class
+
+      \param topic the topic of interest that we are subscribing to
+      \param rates the rate at wich we want to be updated
+      \param handle the NodeHandle we will refer to
+   */
   RatedTopic(std::string const&           topic,
              std::vector<unsigned> const& rates,
              ros::NodeHandle const&       handle = ros::NodeHandle())
@@ -61,7 +82,10 @@ class RatedTopic {
     }
   }
 
-  /// Handles properly both incoming requests and messages.
+  /** \brief Function that start the ros service
+
+   Handles properly both incoming requests and messages.
+  */
   inline auto Run() -> void {
     ros::spin();
   }
@@ -116,7 +140,7 @@ class RatedTopic {
 };
 
 } // namespace kb
-
+  /** @} End of KB group*/
 } // namespace sa
-
+/** @} End of SA group*/
 #endif // SA_KB_INCLUDE_RATED_TOPIC_H_
