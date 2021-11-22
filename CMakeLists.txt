@@ -27,20 +27,20 @@ include_directories(include)
 include_directories(${catkin_INCLUDE_DIRS})
 
 catkin_install_python(
-  PROGRAMS scripts/client.py scripts/server.py scripts/source.py scripts/debugger.py
+  PROGRAMS test_nodes/python/client.py test_nodes/python/server.py test_nodes/python/source.py test_nodes/python/debugger.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
-add_executable(Source src/source.cpp)
+add_executable(Source test_nodes/cpp/source.cpp)
 target_link_libraries(Source ${catkin_LIBRARIES})
 
-add_executable(Multiplexer src/multiplexer.cpp)
+add_executable(Multiplexer test_nodes/cpp/multiplexer.cpp)
 target_link_libraries(Multiplexer ${catkin_LIBRARIES})
 
-add_executable(FirstClient src/first_client.cpp)
+add_executable(FirstClient test_nodes/cpp/first_client.cpp)
 target_link_libraries(FirstClient ${catkin_LIBRARIES})
 
-add_executable(SecondClient src/second_client.cpp)
+add_executable(SecondClient test_nodes/cpp/second_client.cpp)
 target_link_libraries(SecondClient ${catkin_LIBRARIES})
 
-add_executable(Debugger src/debugger.cpp)
+add_executable(Debugger test_nodes/cpp/debugger.cpp)
 target_link_libraries(Debugger ${catkin_LIBRARIES})
