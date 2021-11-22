@@ -24,20 +24,20 @@
    @{
  */
 
-//! Namespace that identify the whole Smart Application project 
+//! Namespace that identify the whole Smart Application project
 namespace sa {
 
-  /**
-     \addtogroup Knowledge_Base
-     @{
-   */
+/**
+    \addtogroup Knowledge_Base
+    @{
+  */
 
-  //! Namespace that identify the Knowledge Base part of the project 
+//! Namespace that identify the Knowledge Base part of the project
 namespace kb {
 
 namespace {
 
-  constexpr auto kMessagesKept = 1UL; //!< Number of incoming messages to keep
+constexpr auto kMessagesKept = 1UL; //!< Number of incoming/outcoming messages to keep
 
 } // namespace
 
@@ -140,7 +140,7 @@ class RatedTopic {
 };
 
 } // namespace kb
-  /** @} End of KB group*/
+/** @} End of KB group*/
 } // namespace sa
 /** @} End of SA group*/
 #endif // SA_KB_INCLUDE_RATED_TOPIC_H_
