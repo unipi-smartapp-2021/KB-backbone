@@ -1,3 +1,9 @@
+"""! @package backbone.frequency_multiplexer
+
+@author backbone_team
+"""
+
+
 from typing import List, TypeVar
 
 import rospy
