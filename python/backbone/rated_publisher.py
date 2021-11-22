@@ -57,6 +57,15 @@ class RatedPublisher:
             return True
    
     def publish_and_delay(self,msg: T) -> Optional[rospy.Duration]:
+        """! Function that publish the message at a given rate while computing the delay between
+        expected and real publish time
+
+        @param msg the message we want to publish
+
+        @return a rospy.Duration if we publish with success
+        @return None if we don't have any subscribers
+        @return None if it's not time for the update yet
+        """
         now = rospy.Time.now()
         if self.get_num_subscribers() == 0 or now < self.next_update:
             return None

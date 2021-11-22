@@ -48,7 +48,7 @@ class RatedTopic:
 
         @param req the request of the Node
 
-        @return the responce of the Node
+        @return the response of the Node
         """
         if req.rate > max(self.publishers.keys()):
             return None
@@ -58,8 +58,8 @@ class RatedTopic:
         return res
 
     def _forwardMessages(self, msg: T) -> None:
-        """! Function that forward the message to every subscribed Node
-
+        """! Function that forward the message to every subscribed Node and computes the delay 
+        in message delivery if there are debugging nodes
         @param msg the message to send
         """
         if self.debugger.get_num_connections() == 0:

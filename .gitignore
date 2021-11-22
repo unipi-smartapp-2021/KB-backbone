@@ -54,3 +54,4 @@ CATKIN_IGNORE
 build
 **__pycache__
 venv
+docs/
