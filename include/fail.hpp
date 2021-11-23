@@ -3,31 +3,27 @@
 
 #include <ros/ros.h>
 
-/**
-   \addtogroup Smart_Application
-   @{
- */
-//! Namespace that identify the whole Smart Application project.
+/** \addtogroup Smart_Application @{ */
 namespace sa {
 
-  /**
-     \addtogroup Knowledge_Base
-     @{
-   */
-  //! Namespace that identify the Knowledge Base part of the project.
+/** \addtogroup Knowledge_Base @{ */
 namespace kb {
 
-  /** \brief Function that send an error message after an error
-
-      \param message the error message we are going to send
-   */
+/// Aborts the program, printing the error `message` provided using [`ROS_FATAL`].
+///
+/// [`ROS_FATAL`]: ROS_FATAL
+///
+/// # Arguments
+/// - `message`: The error message to print
 [[noreturn]] auto Fail(std::string const& message) -> void {
   ROS_FATAL("%s", message.c_str());
   std::_Exit(EXIT_FAILURE);
 }
 
 } // namespace kb
-  /** @} */
+/** @} Knowledge_Base */
+
 } // namespace sa
-/** @} */
+/** @} Smart_Application */
+
 #endif // SA_KB_INCLUDE_FAIL_H_

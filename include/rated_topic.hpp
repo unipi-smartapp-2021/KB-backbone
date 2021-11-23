@@ -42,25 +42,37 @@ constexpr auto kMessagesKept = 1UL; /// Number of incoming/outgoing messages to 
 /// creation it is possible to specify a set of update frequencies that will be used to create as many
 /// new topics on which the subscribers will be distributed according to their preference.
 ///
-/// To be able to subscribe to the managed topic it is sufficient to invoke the service identified as
-/// `"TopicName" + "Rated"` providing an appropriate `RateTopic` request message.
-/// TODO: finish this
+/// To be able to subscribe to the multiplexed topic it is sufficient to invoke the service identified as
+/// `"TopicName" + "Rated"` providing an appropriate `RateTopic` request message. The response from the
+/// receiving node will contain the name that identifies **the first topic that has an update frequency
+/// greater or equal than the one specified** if such exists, otherwise the call fails, `false` is
+/// returned and the associated response **must not be used**.
+///
+/// If the frequencies are known in advance, it is possible to directly connect to the associated topics
+/// using as name `"TopicName" + "Rated" + rate + "Hz"`.
+///
+/// TODO: Add Debug explaination
 template<typename T>
 class RatedTopic {
  public:
-  using DebugMessage = std_msgs::Duration; //!< How much delay a message had when we send it
+  using DebugMessage = std_msgs::Duration; /// Shorthand for the message used to profile delays
 
-  /// TODO
+  /// Multiplexes the `topic` specified with the `rates` provided.
   ///
   /// # Arguments
+  /// - `topic`: Name of the topic to which subscribe
+  /// - `rates`: The ordered set of rates to support
+  /// - `handle`: Handle of the ros node owning the new object
   ///
   /// # Failures
+  /// If `rates` is empty, is not sorted or contains duplicates, the procedure aborts
+  /// calling [`Fail()`].
   ///
+  /// [`Fail()`]: sa::kb::Fail
   RatedTopic(std::string const&           topic,
              std::vector<unsigned> const& rates,
              ros::NodeHandle const&       handle = ros::NodeHandle())
-      : name_{topic + "Rated"},
-        rates_{rates},
+      : rates_{rates},
         handle_{handle},
         subscribe_{handle_.advertiseService(name_, &RatedTopic::HandleSubscribe, this)},
         input_{handle_.subscribe(topic, kMessagesKept, &RatedTopic::ForwardMessage, this)},
@@ -73,6 +85,7 @@ class RatedTopic {
       sa::kb::Fail("Wrong rates provided");
     }
 
+    auto const name = topic + "Rated";
     publishers_.reserve(rates.size());
     for (auto rate : rates) {
       publishers_.emplace_back(
@@ -80,20 +93,26 @@ class RatedTopic {
     }
   }
 
-  /// TODO
+  /// Executes the [`ros::spin()`] loop.
   ///
+  /// [`ros::spin()`]: ros::spin
   inline auto Run() -> void {
     ros::spin();
   }
 
  private:
-  using Request = backbone::RateTopic::Request;
-  using Response = backbone::RateTopic::Response;
+  using Request = backbone::RateTopic::Request;   /// Shorthand for the request message type
+  using Response = backbone::RateTopic::Response; // Shorthand for the response message type
 
-  /// TODO
+  /// Handles subscription requests, returning the name of the first topic
+  /// that has an update rate that is **greater or equal than** that provided.
+  ///
+  /// If there is no such topic, the function returns `false` and the responde message
+  /// **must not be used**.
   ///
   /// # Arguments
-  ///
+  /// - `in`: Incoming request message
+  /// - `out`: Outgoing response message
   auto HandleSubscribe(Request& in, Response& out) -> bool {
     auto upper_bound = std::upper_bound(
         rates_.begin(), rates_.end(), in.rate, [](auto const& a, auto const& b) { return a <= b; });
@@ -105,10 +124,13 @@ class RatedTopic {
     return true;
   }
 
-  /// TODO
+  /// Tries to forward the received message on the source topic to all the rated ones.
+  ///
+  /// If there is **at least** one node subscribed to the debug topic, than it also computes
+  /// the actual delay for each publish performed and sends the average on it.
   ///
   /// # Arguments
-  ///
+  /// - `to_forward`: The incoming message to forward to the rated topics
   auto ForwardMessage(boost::shared_ptr<T const> const& to_forward) -> void {
     if (debugger_.getNumSubscribers() == 0) {
       for (auto& publisher : publishers_) {
@@ -134,13 +156,12 @@ class RatedTopic {
     }
   }
 
-  std::string const                      name_;         /// TODO
-  std::vector<unsigned> const            rates_;        /// TODO
-  ros::NodeHandle                        handle_;       /// TODO
-  ros::ServiceServer                     subscribe_;    /// TODO
-  ros::Subscriber                        input_;        /// TODO
-  std::vector<sa::kb::RatedPublisher<T>> publishers_{}; /// TODO
-  ros::Publisher                         debugger_;     /// TODO
+  std::vector<unsigned> const            rates_;        /// Set of ordered rates to support
+  ros::NodeHandle                        handle_;       /// Handle of the owner ros node
+  ros::ServiceServer                     subscribe_;    /// Subscribe service provider
+  ros::Subscriber                        input_;        /// Source topic
+  std::vector<sa::kb::RatedPublisher<T>> publishers_{}; /// Set of rated topics
+  ros::Publisher                         debugger_;     /// Debug topic on which to send delays
 };
 
 } // namespace kb
