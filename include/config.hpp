@@ -1,3 +1,8 @@
+/// \file config.hpp
+///
+/// File containing the definitions of some constants used to configure the publishers and for testing
+///
+/// \author backbone_team
 #ifndef SA_KB_INCLUDE_CONFIG_H_
 #define SA_KB_INCLUDE_CONFIG_H_
 

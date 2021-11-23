@@ -19,10 +19,14 @@
 #include "config.hpp"
 #include "rated_publisher.hpp"
 
-/** \addtogroup Smart_Application @{ */
+/** \addtogroup Smart_Application 
+    @{ 
+*/
 namespace sa {
 
-/** \addtogroup Knowledge_Base @{ */
+/** \addtogroup Knowledge_Base 
+    @{ 
+*/
 namespace kb {
 
 namespace {
@@ -56,16 +60,15 @@ constexpr auto kMessagesKept = 1UL; /// Number of incoming/outgoing messages to 
 template<typename T>
 class RatedTopic {
  public:
-  using DebugMessage = std_msgs::Duration; /// Shorthand for the message used to profile delays
+  using DebugMessage = std_msgs::Duration; ///< Shorthand for the message used to profile delays
 
-  /// Multiplexes the `topic` specified with the `rates` provided.
+  /// \brief Multiplexes the `topic` specified with the `rates` provided.
   ///
-  /// # Arguments
-  /// - `topic`: Name of the topic to which subscribe
-  /// - `rates`: The ordered set of rates to support
-  /// - `handle`: Handle of the ros node owning the new object
+  /// \param topic Name of the topic to which subscribe
+  /// \param rates The ordered set of rates to support
+  /// \param handle Handle of the ros node owning the new object
   ///
-  /// # Failures
+  /// ### Failures
   /// If `rates` is empty, is not sorted or contains duplicates, the procedure aborts
   /// calling [`Fail()`].
   ///
@@ -94,7 +97,7 @@ class RatedTopic {
     }
   }
 
-  /// Executes the [`ros::spin()`] loop.
+  /// \brief Executes the [`ros::spin()`] loop.
   ///
   /// [`ros::spin()`]: ros::spin
   inline auto Run() -> void {
@@ -103,17 +106,19 @@ class RatedTopic {
 
  private:
   using Request = backbone::RateTopic::Request;   /// Shorthand for the request message type
-  using Response = backbone::RateTopic::Response; // Shorthand for the response message type
+  using Response = backbone::RateTopic::Response; /// Shorthand for the response message type
 
-  /// Handles subscription requests, returning the name of the first topic
+  /// \brief Handles subscription requests, returning the name of the first topic
   /// that has an update rate that is **greater or equal than** that provided.
   ///
   /// If there is no such topic, the function returns `false` and the responde message
   /// **must not be used**.
   ///
-  /// # Arguments
-  /// - `in`: Incoming request message
-  /// - `out`: Outgoing response message
+  /// \param in Incoming request message
+  /// \param out Outgoing response message
+  ///
+  /// \return True if successfully subscribed
+  /// \return False if there is no such topic to subscribe
   auto HandleSubscribe(Request& in, Response& out) -> bool {
     auto upper_bound = std::upper_bound(
         rates_.begin(), rates_.end(), in.rate, [](auto const& a, auto const& b) { return a <= b; });
@@ -125,13 +130,12 @@ class RatedTopic {
     return true;
   }
 
-  /// Tries to forward the received message on the source topic to all the rated ones.
+  /// \brief Tries to forward the received message on the source topic to all the rated ones.
   ///
   /// If there is **at least** one node subscribed to the debug topic, than it also computes
   /// the actual delay for each publish performed and sends the average on it.
   ///
-  /// # Arguments
-  /// - `to_forward`: The incoming message to forward to the rated topics
+  /// \param to_forward The incoming message to forward to the rated topics
   auto ForwardMessage(boost::shared_ptr<T const> const& to_forward) -> void {
     if (debugger_.getNumSubscribers() == 0) {
       for (auto& publisher : publishers_) {
