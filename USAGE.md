@@ -46,30 +46,27 @@ The python setup is very similar  but there are some differences:
 
 1. **Server side**: since there are no templates in python, the message type must be passed as a constructor parameter. 
 
-   ```python
-   	rospy.init_node("freq_multiplexer") # ALWAYS EXECUTE THIS BEFORE CREATING THE MULTIPLEXER
-   
-       m = backbone.RatedTopic("sensor_topic", std_msgs.msg.String, rates=[10, 20])
-       m.run()
-   ```
+    ```python
+    rospy.init_node("freq_multiplexer") 
+    m = backbone.RatedTopic("sensor_topic",     std_msgs.msg.String, rates=[10, 20])
+    m.run()
+    ```
 
 2.  **Client side**: the service call returns a response object and not a boolean 
 
-   ```python
-   	rospy.wait_for_service("sensor_topicRated")
-       try:
-           throttletopic = rospy.ServiceProxy("sensor_topicRated", RateTopic)
-           resp: RateTopicResponse = throttletopic(5) 	
-           topic = resp.topic
-           rospy.Subscriber(topic, data_class=std_msgs.msg.String, callback=callback)
-           rospy.loginfo(f"listening on topic {topic}")
-           rospy.spin()
-   	except rospy.ServiceException as e:
-           print(f"Failed service call: {e}")
-      	return 0
-   ```
-
-   
+    ```python
+    rospy.wait_for_service("sensor_topicRated")
+    try:
+        throttletopic = rospy.ServiceProxy("sensor_topicRated", RateTopic)
+        resp: RateTopicResponse = throttletopic(5) 	
+        topic = resp.topic
+        rospy.Subscriber(topic, data_class=std_msgs.msg.String, callback=callback)
+        rospy.loginfo(f"listening on topic {topic}")
+        rospy.spin()
+    except rospy.ServiceException as e:
+        print(f"Failed service call: {e}")
+    return 0 
+    ```
 
 # Various 
 
