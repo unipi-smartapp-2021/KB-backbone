@@ -1,4 +1,3 @@
-# %Tag(FULLTEXT)%
 cmake_minimum_required(VERSION 3.7...3.21)
 if(${CMAKE_VERSION} VERSION_LESS 3.12)
   cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})  
@@ -6,19 +5,42 @@ endif()
 
 project(backbone)
 
-## Find catkin and any catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg message_generation)
 
-## Declare a catkin package
+catkin_python_setup()
+add_service_files(
+  DIRECTORY srv
+  FILES
+  RateTopic.srv
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
 catkin_package()
 
-## Build talker and listener
+# For `clangd`, change it with the correct path
+# include_directories(/path_to_your_ros_ws/devel/include)
 include_directories(include)
 include_directories(${catkin_INCLUDE_DIRS})
 
-add_executable(talker src/talker.cpp)
-target_link_libraries(talker ${catkin_LIBRARIES})
+catkin_install_python(
+  PROGRAMS test_nodes/python/client.py test_nodes/python/server.py test_nodes/python/source.py test_nodes/python/debugger.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
-add_executable(listener src/listener.cpp)
-target_link_libraries(listener ${catkin_LIBRARIES})
-# %EndTag(FULLTEXT)%
+add_executable(Source test_nodes/cpp/source.cpp)
+target_link_libraries(Source ${catkin_LIBRARIES})
+
+add_executable(Multiplexer test_nodes/cpp/multiplexer.cpp)
+target_link_libraries(Multiplexer ${catkin_LIBRARIES})
+
+add_executable(FirstClient test_nodes/cpp/first_client.cpp)
+target_link_libraries(FirstClient ${catkin_LIBRARIES})
+
+add_executable(SecondClient test_nodes/cpp/second_client.cpp)
+target_link_libraries(SecondClient ${catkin_LIBRARIES})
+
+add_executable(Debugger test_nodes/cpp/debugger.cpp)
+target_link_libraries(Debugger ${catkin_LIBRARIES})

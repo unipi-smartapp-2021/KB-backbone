@@ -1,0 +1,7 @@
+# request fields
+
+uint32 rate
+---
+#responsefields
+
+string topic

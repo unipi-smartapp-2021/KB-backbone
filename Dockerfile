@@ -12,4 +12,4 @@ RUN . "/opt/ros/$ROS_DISTRO/setup.sh" && cd $ROS_WS && catkin_make \
   '$isource "$ROS_WS/devel/setup.bash"' \
   /ros_entrypoint.sh
 
-CMD [ "roslaunch","backbone","backbone.launch" ]
+CMD [ "catkin_make"]

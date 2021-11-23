@@ -1,4 +1,7 @@
 <launch>
-<node name="talker" pkg="backbone" type="talker"/>
-<node name="listener" pkg="backbone" type="listener" output="screen"/>
+  <node name = "Source"       pkg = "backbone" type = "Source"       output = "screen"/>
+  <node name = "Multiplexer"  pkg = "backbone" type = "Multiplexer"  output = "screen"/>
+  <node name = "FirstClient"  pkg = "backbone" type = "FirstClient"  output = "screen"/>
+  <node name = "SecondClient" pkg = "backbone" type = "SecondClient" output = "screen"/>
+  <node name = "Debugger"     pkg = "backbone" type = "Debugger"     output = "screen"/>
 </launch>

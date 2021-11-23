@@ -49,3 +49,9 @@ qtcreator-*
 
 # Catkin custom files
 CATKIN_IGNORE
+.cache/
+.vscode
+build
+**__pycache__
+venv
+docs/

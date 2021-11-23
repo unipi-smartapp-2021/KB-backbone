@@ -2,31 +2,41 @@
 <package format="2">
   <name>backbone</name>
   <version>0.0.0</version>
-  <description>The backbone package</description>
+  <description>Library that expose a ROS service allowing other nodes to subscribe to a topic 
+  specifying an upper bound for the frequency of message arrival. The library exposes APIs both for python packages
+  and C++ packages.
+  </description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="root@todo.todo">root</maintainer>
-
+  <maintainer email="n.piazzesi@studenti.unipi.it">Niccolò Piazzesi</maintainer>
+  <maintainer email="s.pacchini1@studenti.unipi.it">Stefano Pacchini </maintainer>
+  <maintainer email="f.iannelli1@studenti.unipi.it">Francesco Iannelli</maintainer>
+  <maintainer email="m.dequattro@studenti.unipi.it">Michele De Quattro</maintainer>
+  
+  
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
+  <license>BSD</license>
 
 
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
   <!-- <url type="website">http://wiki.ros.org/backbone</url> -->
-
+  <url type="repository">https://github.com/unipi-smartapp-2021/KB-backbone</url>
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
   <!-- Authors do not have to be maintainers, but could be -->
   <!-- Example: -->
   <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
-
+  <author email="n.piazzesi@studenti.unipi.it">Niccolò Piazzesi</author>
+  <author email="s.pacchini1@studenti.unipi.it">Stefano Pacchini</author>
+  <author email="f.iannelli1@studenti.unipi.it">Francesco Iannelli</author>
+  <author email="m.dequattro@studenti.unipi.it">Michele De Quattro</author>
 
   <!-- The *depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
@@ -49,9 +59,19 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>cpp_common</build_depend>
   <build_depend>roscpp</build_depend>
-  <build_export_depend>roscpp</build_export_depend>
+  <build_depend>message_generation</build_depend>
+  
+
+  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>rosconsole</exec_depend>
   <exec_depend>roscpp</exec_depend>
+  <exec_depend>rostime</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>xmlrpcpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
