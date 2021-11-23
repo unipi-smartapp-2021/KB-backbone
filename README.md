@@ -4,7 +4,7 @@ ROS library that enables frequency bounded communication between ROS nodes
 # Installation
 Clone this repository in the **src** folder of your catkin workspace and then run **catkin_make** from the root of the workspace.
 
-If, for example, your catkin workspace is /home/<user>/ws run these commands:
+If, for example, your catkin workspace is `/home/<user>/ws` run these commands:
 
 ```bash
 $ git clone https://github.com/unipi-smartapp-2021/KB-backbone.git  /home/<user>/ws/src
