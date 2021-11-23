@@ -51,7 +51,8 @@ constexpr auto kMessagesKept = 1UL; /// Number of incoming/outgoing messages to 
 /// If the frequencies are known in advance, it is possible to directly connect to the associated topics
 /// using as name `"TopicName" + "Rated" + rate + "Hz"`.
 ///
-/// TODO: Add Debug explaination
+/// If a node that is used for debugging/logging purposes is interested in knowing the publish delay of
+/// the multiplexer, it can subscribe to the topic `"TopicName" + "Rated" + "Delay".
 template<typename T>
 class RatedTopic {
  public:
@@ -74,9 +75,7 @@ class RatedTopic {
              ros::NodeHandle const&       handle = ros::NodeHandle())
       : rates_{rates},
         handle_{handle},
-        subscribe_{handle_.advertiseService(name_, &RatedTopic::HandleSubscribe, this)},
-        input_{handle_.subscribe(topic, kMessagesKept, &RatedTopic::ForwardMessage, this)},
-        debugger_{handle_.advertise<DebugMessage>(name_ + "Delay", kMessagesKept)} {
+        input_{handle_.subscribe(topic, kMessagesKept, &RatedTopic::ForwardMessage, this)} {
     if (rates.empty()) {
       sa::kb::Fail("No rate provided");
     }
@@ -86,10 +85,12 @@ class RatedTopic {
     }
 
     auto const name = topic + "Rated";
+    subscribe_ = handle_.advertiseService(name, &RatedTopic::HandleSubscribe, this);
+    debugger_ = handle_.advertise<DebugMessage>(name + "Delay", kMessagesKept);
     publishers_.reserve(rates.size());
     for (auto rate : rates) {
       publishers_.emplace_back(
-          handle_.advertise<T>(name_ + std::to_string(rate) + "Hz", kMessagesKept), rate);
+          handle_.advertise<T>(name + std::to_string(rate) + "Hz", kMessagesKept), rate);
     }
   }
 
