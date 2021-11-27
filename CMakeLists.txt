@@ -31,15 +31,19 @@ catkin_install_python(
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 add_executable(Source test_nodes/cpp/source.cpp)
+add_dependencies(Source ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_link_libraries(Source ${catkin_LIBRARIES})
 
 add_executable(Multiplexer test_nodes/cpp/multiplexer.cpp)
+add_dependencies(Multiplexer ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_link_libraries(Multiplexer ${catkin_LIBRARIES})
 
 add_executable(FirstClient test_nodes/cpp/first_client.cpp)
+add_dependencies(FirstClient ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_link_libraries(FirstClient ${catkin_LIBRARIES})
 
 add_executable(SecondClient test_nodes/cpp/second_client.cpp)
+add_dependencies(SecondClient ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_link_libraries(SecondClient ${catkin_LIBRARIES})
 
 add_executable(Debugger test_nodes/cpp/debugger.cpp)
