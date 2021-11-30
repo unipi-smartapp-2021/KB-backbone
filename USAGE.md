@@ -8,14 +8,17 @@ The main template exposed is ```RatedTopic```. Assume for instance that you want
     ```c++
     ros::init(argc, "my node")
     ```
-2. Initialize the multiplexer with the target rates. The list of target must be composed of **distinct, sorted, positive integer values** or else the creation will fail.
+2. Initialize the multiplexer with the target rates. The list of target must be composed of **distinct, sorted, positive integer values** or else the creation will fail. No method call beyond this is necessary,
+all the necessary service setup will be handled inside the class.
     ```c++
     auto rates = std::vector<unsigned>({10, 20}); //setup list of target rates. 
     // initialize the multiplexer
     // The type of the template must be the c++ type of the messages published on the topic
-    auto multiplexer = sa::kb::RatedTopic<std_msgs::String>("sensor_topic",rates)
-    // start the multiplexer node
-    multiplexer.Run()
+    sa::kb::RatedTopic<std_msgs::String>("sensor_topic",rates)
+3.  Spin the node. 
+
+    ```c++
+    ros::spin()
     ```
 ## Client side
 
@@ -50,8 +53,8 @@ Since there are no templates in python, the message type must be passed as a par
 
 ```python
 rospy.init_node("freq_multiplexer") 
-m = backbone.RatedTopic("sensor_topic", std_msgs.msg.String, rates=[10, 20])
-m.run()
+backbone.RatedTopic("sensor_topic", std_msgs.msg.String, rates=[10, 20])
+rospy.spin()
 ```
 
 ## Client side

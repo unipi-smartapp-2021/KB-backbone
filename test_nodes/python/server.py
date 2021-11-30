@@ -9,7 +9,7 @@ def main() -> int:
     rospy.init_node("freq_multiplexer")
 
     m = RatedTopic("test_topic", String, rates=[6,10])
-    m.run()
+    rospy.spin()
     return 0
 
 

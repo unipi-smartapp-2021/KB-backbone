@@ -96,13 +96,6 @@ class RatedTopic {
     }
   }
 
-  /// \brief Executes the [`ros::spin()`] loop.
-  ///
-  /// [`ros::spin()`]: ros::spin
-  inline auto Run() -> void {
-    ros::spin();
-  }
-
  private:
   using Request = backbone::RateTopic::Request;   /// Shorthand for the request message type
   using Response = backbone::RateTopic::Response; /// Shorthand for the response message type
@@ -121,7 +114,7 @@ class RatedTopic {
   auto HandleSubscribe(Request& in, Response& out) -> bool {
     if (in.rate <= 0){
       ROS_ERROR("Got request rate %d Hz, please send a positive value", in.rate);
-      return true;
+      return false;
     }
     else {
       auto upper_bound = std::upper_bound(

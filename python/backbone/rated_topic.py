@@ -37,10 +37,6 @@ class RatedTopic:
                 for rate in rates
             }
 
-    def run(self) -> None:
-        """! Base function that start the thread"""
-        rospy.spin()
-
     def _registerToNode(self, req: RateTopicRequest) -> Optional[RateTopicResponse]:
         """! Function that register the node to the publisher
 
