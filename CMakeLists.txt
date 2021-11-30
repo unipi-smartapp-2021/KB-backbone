@@ -27,7 +27,7 @@ include_directories(include)
 include_directories(${catkin_INCLUDE_DIRS})
 
 catkin_install_python(
-  PROGRAMS test_nodes/python/client.py test_nodes/python/server.py test_nodes/python/source.py test_nodes/python/debugger.py
+  PROGRAMS test_nodes/python/client.py test_nodes/python/client2.py test_nodes/python/server.py test_nodes/python/source.py test_nodes/python/debugger.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 add_executable(Source test_nodes/cpp/source.cpp)

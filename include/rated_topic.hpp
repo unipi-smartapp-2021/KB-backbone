@@ -86,7 +86,6 @@ class RatedTopic {
     if (!std::is_sorted(rates.begin(), rates.end())) {
       sa::kb::Fail("Wrong rates provided");
     }
-
     auto const name = topic + "Rated";
     subscribe_ = handle_.advertiseService(name, &RatedTopic::HandleSubscribe, this);
     debugger_ = handle_.advertise<DebugMessage>(name + "Delay", kMessagesKept);
@@ -120,16 +119,22 @@ class RatedTopic {
   /// \return True if successfully subscribed
   /// \return False if there is no such topic to subscribe
   auto HandleSubscribe(Request& in, Response& out) -> bool {
-    auto upper_bound = std::upper_bound(
-        rates_.begin(), rates_.end(), in.rate, [](auto const& a, auto const& b) { return a <= b; });
-    if (upper_bound == rates_.end()) {
-      return false;
+    if (in.rate <= 0){
+      ROS_ERROR("Got request rate %d Hz, please send a positive value", in.rate);
+      return true;
     }
-
+    else {
+      auto upper_bound = std::upper_bound(
+          rates_.begin(), rates_.end(), in.rate);
+      if (upper_bound == rates_.begin()) {
+        ROS_ERROR("Got request rate %d Hz: the minimum frequency supported is %d Hz",in.rate,*rates_.begin());
+        return false;
+      }
+    upper_bound--;
     out.topic = publishers_[std::distance(rates_.begin(), upper_bound)].TopicName();
     return true;
   }
-
+  }
   /// \brief Tries to forward the received message on the source topic to all the rated ones.
   ///
   /// If there is **at least** one node subscribed to the debug topic, than it also computes
@@ -160,7 +165,6 @@ class RatedTopic {
       debugger_.publish(to_debug);
     }
   }
-
   std::vector<unsigned> const            rates_;        /// Set of ordered rates to support
   ros::NodeHandle                        handle_;       /// Handle of the owner ros node
   ros::ServiceServer                     subscribe_;    /// Subscribe service provider

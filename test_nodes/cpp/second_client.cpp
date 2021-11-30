@@ -19,7 +19,7 @@ auto main(int argc, char* argv[]) -> int {
   auto client =
       handle.serviceClient<backbone::RateTopic>(std::string(sa::kb::kTestTopic) + "Rated");
   auto service = backbone::RateTopic();
-  service.request.rate = sa::kb::kSecondClientRate;
+  service.request.rate = 45;
   if (!client.call(service)) {
     ROS_ERROR("SecondClient) Failed to call service");
     return EXIT_FAILURE;

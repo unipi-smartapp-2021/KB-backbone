@@ -8,7 +8,7 @@ from std_msgs.msg import String
 def main() -> int:
     rospy.init_node("freq_multiplexer")
 
-    m = RatedTopic("test_topic", String, rates=[1,2,3,4,5])
+    m = RatedTopic("test_topic", String, rates=[6,10])
     m.run()
     return 0
 

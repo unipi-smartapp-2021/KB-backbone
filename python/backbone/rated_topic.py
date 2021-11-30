@@ -1,4 +1,5 @@
 from typing import Dict, List, Optional, TypeVar
+import bisect
 from std_msgs.msg import Duration
 import rospy
 from backbone.rated_publisher import RatedPublisher
@@ -17,6 +18,7 @@ class RatedTopic:
         @param msg the message type we are going to send
         @return None
         """
+        self.original_topic = topic
         self.data_class: T = data_class
         self.name: str = f"{topic}Rated"
         self.service: rospy.Service = rospy.Service(
@@ -28,13 +30,9 @@ class RatedTopic:
         self.debugger = rospy.Publisher(
             f"{self.name}Delay", Duration, queue_size=1
         )
-        if len(rates) == 0:
-            pass
-        elif not all(rates[i] < rates[i + 1] for i in range(len(rates) - 1)):
-            pass
-        else:
-
-            self.publishers: Dict[RatedPublisher] = {
+        assert len(rates) > 0, "Please provide a non empty list"
+        assert all(rates[i] < rates[i + 1] for i in range(len(rates) - 1)), "Please provide a sorted list"
+        self.publishers: Dict[RatedPublisher] = {
                 rate:RatedPublisher(rospy.Publisher(f"{self.name}{rate}Hz",data_class=self.data_class,queue_size=1),rate)
                 for rate in rates
             }
@@ -50,11 +48,27 @@ class RatedTopic:
 
         @return the response of the Node
         """
-        if req.rate > max(self.publishers.keys()):
+        print(self.publishers.keys())
+        rates = list(self.publishers.keys())
+        print(rates)
+        max_rate =  max(rates)
+        res = RateTopicResponse()
+        if req.rate <= 0:
+            rospy.logerr(f"Got request rate {req.rate} Hz, please send a positive rate")
             return None
+        elif req.rate < rates[0]:
+            rospy.logerr(f"Got request rate {req.rate} Hz, the minimum frequency supported is {rates[0]} Hz")
+            return None
+        elif req.rate >= rates[-1]:
+            res.topic  = self.publishers[rates[-1]].get_topic()
+            return res
+        elif req.rate in rates:
+            res.topic = self.publishers[req.rate].get_topic()
+            return res
         else:
-            new_topic = self.publishers[req.rate].get_topic()
-            res = RateTopicResponse(new_topic)
+            idx = bisect.bisect_left(rates, req.rate)
+            rate = rates[idx-1]
+            res.topic = self.publishers[rate].get_topic()
         return res
 
     def _forwardMessages(self, msg: T) -> None:

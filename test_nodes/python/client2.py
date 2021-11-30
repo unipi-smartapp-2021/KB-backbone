@@ -8,16 +8,16 @@ import std_msgs.msg
 import roslaunch
 
 def callback(message: std_msgs.msg.String) -> None:
-    rospy.loginfo(f"client1: got {message.data}")
+    rospy.loginfo(f"client2: got {message.data}")
 
 
 def main() -> int:
-    rospy.init_node("client_test")
+    rospy.init_node("client_test2")
     rospy.wait_for_service("test_topicRated")
     try:
         throttletopic = rospy.ServiceProxy("test_topicRated", RateTopic)
-        resp: RateTopicResponse = throttletopic(6)
-        print(f"CLIENT1) got new topic {resp.topic}")
+        resp: RateTopicResponse = throttletopic(11)
+        print(f"CLIENT 2) got new topic {resp.topic}")
         topic = resp.topic
         rospy.Subscriber(topic, data_class=std_msgs.msg.String, callback=callback)
         rospy.loginfo(f"listening on topic {topic}")
