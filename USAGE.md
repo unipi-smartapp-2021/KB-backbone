@@ -15,10 +15,7 @@ all the necessary service setup will be handled inside the class.
     // initialize the multiplexer
     // The type of the template must be the c++ type of the messages published on the topic
     sa::kb::RatedTopic<std_msgs::String>("sensor_topic",rates)
-3.  Spin the node. 
-
-    ```c++
-    ros::spin()
+    // Other code
     ```
 ## Client side
 
@@ -53,8 +50,9 @@ Since there are no templates in python, the message type must be passed as a par
 
 ```python
 rospy.init_node("freq_multiplexer") 
-backbone.RatedTopic("sensor_topic", std_msgs.msg.String, rates=[10, 20])
-rospy.spin()
+### Other code
+m = backbone.RatedTopic("sensor_topic", std_msgs.msg.String, rates=[10, 20])
+### Other code
 ```
 
 ## Client side
