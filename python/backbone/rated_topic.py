@@ -44,9 +44,7 @@ class RatedTopic:
 
         @return the response of the Node
         """
-        print(self.publishers.keys())
         rates = list(self.publishers.keys())
-        print(rates)
         max_rate =  max(rates)
         res = RateTopicResponse()
         if req.rate <= 0:

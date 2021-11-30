@@ -22,7 +22,7 @@ namespace kb {
 
 constexpr auto kSourceRate = 30UL;              //!< Test rate for the source
 constexpr auto kFirstClientRate = 1UL;          //!< Test rate for first client
-constexpr auto kSecondClientRate = 4UL;         //!< Test rate for second client
+constexpr auto kSecondClientRate = 6UL;         //!< Test rate for second client
 constexpr auto kSubscriptionWaitTimeMs = 125UL; //!< Subscription cooldown
 constexpr auto kTestTopic = "SensorTopic";      //!< Test topic name
 constexpr auto kMillisInSecond = 1000UL;        //!< The amount of milliseconds in a second
