@@ -1,0 +1,22 @@
+#!/usr/bin/env/ python3
+import logging
+from backbone.rated_topic import RatedTopic
+import argparse
+import rospy
+import rostopic
+import roslib.message
+
+def main() -> int:
+    rospy.init_node(name="multiplexer",anonymous=True)
+    parser = argparse.ArgumentParser(description="Republishes messages from a topic to the subscribed clients at the specified maximum frequencies")
+    parser.add_argument("-t","--topic",metavar="/topic",type=str, help="Topic to control",required=True)
+    parser.add_argument("-r","--rates",metavar="1,5,10,20",type=int,nargs="+", help="List of target frequencies",required=True)
+    args = parser.parse_args()
+    rates = list(sorted(set(args.rates)))
+    message_type = rostopic.get_topic_type(args.topic, blocking=True)[0]
+    message_class = roslib.message.get_message_class(message_type=message_type)
+    mult = RatedTopic(args.topic, message_class,rates)
+    logging.info("Multiplexer started")
+    rospy.spin()
+if __name__ == "__main__":
+    raise SystemExit(main())
