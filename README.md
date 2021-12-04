@@ -14,7 +14,7 @@ $ catkin_make
 
 # Usage
 ## Using rosrun
-The library provides the ```multiplexer``` executable to quickly start a multiplexer on a given topic. As an example, if you want to provide timed subscriptions to a topic ```/test``` at 5,10,20,and 50 Hz just run
+The library provides the ```multiplexer``` executable to quickly start a multiplexer on a given topic. As an example, if you want to provide timed subscriptions to a topic ```/test``` at 5,10,20,and 50 Hz just run. Please remeber to provide **positive** and **integer** values as rates. RatedTopic expects them to also be sorted in ascended order and made of distinct values, but this script does that automatically.
 ```bash
 $ rosrun backbone --topic /test --rates 5 10 20 50
 ```
