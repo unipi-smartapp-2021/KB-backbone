@@ -18,9 +18,10 @@ The library provides the ```multiplexer``` executable to quickly start a multipl
 ```bash
 $ rosrun backbone multiplexer --topic /test --rates 5 10 20 50
 ```
-Please remeber to provide **positive** and **integer** values as rates. RatedTopic expects them to also be sorted in ascended order and made of distinct values, but this script does that automatically.
+This will create 4 new topics: **testRated5Hz**, **testRated10Hz**, **testRated20Hz** and **testRated50Hz**. You can subscribe to one of these to get messages at the indicate maximum frequency. 
+Please remeber to provide **positive** and **integer** values to **--rates**. RatedTopic expects them to also be sorted in ascended order and made of distinct values, but this script does that automatically.
 
-You can also setup multiple multiplexer of this nodes using ```roslaunch```, just remember to pass the required arguments **--topic** and **--rates**
+You can also setup multiple multiplexer of this nodes using ```roslaunch```, just remember to pass the required arguments **--topic** and **--rates**.
 ## As a library
 Some example nodes can be found in the [`test_nodes`](https://github.com/unipi-smartapp-2021/KB-backbone/tree/main/test_nodes) folder, they offer a hint on how to use the classes exposed by this library.
 
