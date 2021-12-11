@@ -50,11 +50,11 @@ A more detailed API reference is available in [USAGE.md](./USAGE.md).
 
 ## Version Checking
 The library provides the  ```version_checker``` executable. This executable needs two parameter on the parameter server to function:
-1. *version* is an integer indicating the current version constraint that each custom message defined must satisfy
+1. *t_version* is an integer indicating the current version constraint that each custom message published on topic *t* must satisfy
 2. *VERSION_FIELD* is a string parameter that indicates the **name** of the field that each custom message must use to store the version value.
 
 ```bash
-$ rosparam set version 1
+$ rosparam set topic_version 1
 ```
 
 ```bash
@@ -63,9 +63,9 @@ $ rosparam set VERSION_FIELD version
 To start the version checker run
 
 ```bash
-$ rosrun backbone multiplexer --topic /test --message-type backbone/TestMsg
+$ rosrun backbone multiplexer --topic test --message-type backbone/TestMsg
 ```
-**N.B**: remeber to include the initial slash at the beginning of the topic name
+**N.B**: do not put any slash at the start of the topic name, it is automatically included by the script
 
 The ```--message-type``` flag is optional, if it is not set, the node will wait for the first message to be published on the topic to access informations about its type.
 

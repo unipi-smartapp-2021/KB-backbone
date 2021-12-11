@@ -13,7 +13,7 @@ def main() -> int:
     parser.add_argument(
         "-t",
         "--topic",
-        metavar="/topic",
+        metavar="topic",
         type=str,
         help="Topic to control",
         required=True,
@@ -27,7 +27,7 @@ def main() -> int:
         required=False,
     )
     args = parser.parse_args()
-    ver = rospy.get_param("version", None)
+    ver = rospy.get_param(f"/{args.topic}_version", None)
     field = rospy.get_param("VERSION_FIELD", None)
     if args.message_type:
         message_type = args.message_type
@@ -38,7 +38,7 @@ def main() -> int:
             f"please remember to setup the version and VERSION_FIELD parameters on the master node "
         )
     else:
-        checker = VersionChecker(args.topic, args.message_type)
+        checker = VersionChecker(f"/{args.topic}", args.message_type)
         rospy.spin()
         return 0
 

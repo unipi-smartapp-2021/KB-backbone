@@ -10,7 +10,7 @@ class VersionChecker:
         self.sub = rospy.Subscriber(
             self.topic, self.msg_class, callback=self.check_version, queue_size=1
         )
-        self.version = rospy.get_param("version")
+        self.version = rospy.get_param(f"/{self.topic}_version")
         self.version_field = rospy.get_param("VERSION_FIELD")
 
     def check_version(self, msg) -> None:
