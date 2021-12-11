@@ -49,10 +49,17 @@ You can try such nodes with the launch files provided in [`launch`](https://gith
 A more detailed API reference is available in [USAGE.md](./USAGE.md).
 
 ## Version Checking
-The library provides the  ```version_checker``` executable. THis executable needs tow parameter on the parameter servers to function:
+The library provides the  ```version_checker``` executable. This executable needs tow parameter on the parameter servers to function:
 1. *version* is an integer indicating the current version constraint that each custom message defined must satisfy
 2. *VERSION_FIELD* is a string parameter that indicates the **name** of the field that each custom message must use to store the version value.
 
+```bash
+$ rosparam set version 1
+```
+
+```bash
+$ rosparam set VERSION_FIELD version
+```
 To start the version checker run
 
 ```bash
