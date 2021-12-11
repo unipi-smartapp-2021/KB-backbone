@@ -16,7 +16,7 @@ class VersionChecker:
     def check_version(self, msg) -> None:
         if self.version_field not in msg.__slots__:
             raise WrongVersionException(
-                f"backbone/CustomHeader field {self.version_field} not present in msg fields, please remember to include it"
+                f"Field {self.version_field} not present in msg fields, please remember to include it"
             )
         elif getattr(msg, self.version_field) != self.version:
             raise WrongVersionException(
