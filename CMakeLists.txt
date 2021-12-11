@@ -16,7 +16,6 @@ add_service_files(
 
 add_message_files(
   FILES
-  CustomHeader.msg
   TestMsg.msg
 )
 generate_messages(

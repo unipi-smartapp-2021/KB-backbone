@@ -18,9 +18,9 @@ class VersionChecker:
             raise WrongVersionException(
                 f"backbone/CustomHeader field {self.version_field} not present in msg fields, please remember to include it"
             )
-        elif getattr(msg, self.version_field).version != self.version:
+        elif getattr(msg, self.version_field) != self.version:
             raise WrongVersionException(
-                f"Got version {getattr(msg, self.version_field).version}, expected {self.version}"
+                f"Got version {getattr(msg, self.version_field)}, expected {self.version}"
             )
         else:
             return None

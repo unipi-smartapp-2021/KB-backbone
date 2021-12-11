@@ -1,3 +1,3 @@
-backbone/CustomHeader version_header
+uint16 version
 
 string data
