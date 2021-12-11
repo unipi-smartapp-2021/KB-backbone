@@ -49,7 +49,7 @@ You can try such nodes with the launch files provided in [`launch`](https://gith
 A more detailed API reference is available in [USAGE.md](./USAGE.md).
 
 ## Version Checking
-The library provides the  ```version_checker``` executable. This executable needs tow parameter on the parameter servers to function:
+The library provides the  ```version_checker``` executable. This executable needs two parameter on the parameter server to function:
 1. *version* is an integer indicating the current version constraint that each custom message defined must satisfy
 2. *VERSION_FIELD* is a string parameter that indicates the **name** of the field that each custom message must use to store the version value.
 
@@ -69,7 +69,7 @@ $ rosrun backbone multiplexer --topic /test --message-type backbone/TestMsg
 
 The ```--message-type``` flag is optional, if it is not set, the node will wait for the first message to be published on the topic to access informations about its type.
 
-You can also configure this node in a roslaunch file. Rememebr to load the two required parameters on the parameter server.
+You can also configure this node in a roslaunch file. Rememeber to load the two required parameters on the parameter server.
 # Docs
 
 We use **doxygen** to generate docs from comments in the source code. Run 
