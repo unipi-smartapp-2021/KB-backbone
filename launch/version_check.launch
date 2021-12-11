@@ -1,0 +1,7 @@
+<launch>
+<param name = "version" type="int" value="1"/>
+<param name = "VERSION_FIELD" type="string" value="version"/>
+<node name = "Source"       pkg = "backbone" type = "version_check_source.py" />
+<node name = "Checker"  pkg = "backbone" type = "checker.py" output="screen"/>
+<node name = "FirstClient"  pkg = "backbone" type = "check_sub.py" output="screen"/>
+</launch>

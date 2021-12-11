@@ -14,6 +14,10 @@ add_service_files(
   RateTopic.srv
 )
 
+add_message_files(
+  FILES
+  TestMsg.msg
+)
 generate_messages(
   DEPENDENCIES
   std_msgs
@@ -27,7 +31,12 @@ include_directories(include)
 include_directories(${catkin_INCLUDE_DIRS})
 
 catkin_install_python(
-  PROGRAMS scripts/multiplexer
+  PROGRAMS 
+  scripts/multiplexer
+  scripts/version_checker 
+  test_nodes/python/version_check_source.py 
+  test_nodes/python/checker.py 
+  test_nodes/python/check_sub.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 add_executable(Source test_nodes/cpp/source.cpp)
