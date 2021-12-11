@@ -1,5 +1,8 @@
+#!/usr/bin/env python3
+
 import rospy
 from backbone.msg import TestMsg
+
 def cb(msg):
     print(msg.data)
 

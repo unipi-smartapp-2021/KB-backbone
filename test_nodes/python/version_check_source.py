@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import rospy
 from backbone.msg import TestMsg
 def main() -> int:
@@ -6,7 +8,7 @@ def main() -> int:
     pub = rospy.Publisher("test",TestMsg)
     rate = rospy.Rate(10)
     msg = TestMsg()
-    msg.version_header.version = 2
+    msg.version = 2
     msg.data = "hello"
     while not rospy.is_shutdown():
         pub.publish(msg)

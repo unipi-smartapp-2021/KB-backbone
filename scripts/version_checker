@@ -1,7 +1,8 @@
-#!/usr/bin/env/python3
+#!/usr/bin/env python3
 from backbone.version_checker import VersionChecker
 import argparse
 import rospy
+import rostopic
 
 
 def main() -> int:
@@ -23,11 +24,15 @@ def main() -> int:
         metavar="std_msgs/String",
         type=str,
         help="Type of messages that gets published on target topic",
-        required=True,
+        required=False,
     )
     args = parser.parse_args()
     ver = rospy.get_param("version", None)
     field = rospy.get_param("VERSION_FIELD", None)
+    if args.message_type:
+        message_type = args.message_type
+    else:
+        message_type = rostopic.get_topic_type(args.topic, blocking=True)[0]
     if not ver or not field:
         raise ValueError(
             f"please remember to setup the version and VERSION_FIELD parameters on the master node "

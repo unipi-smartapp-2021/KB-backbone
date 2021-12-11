@@ -1,5 +1,9 @@
 # KB-backbone
-KB-backbone is a ROS library that enables frequency bounded communication between ROS nodes.
+KB-backbone is a ROS library that enables higher level communication between ROS nodes.
+
+Currently, two functionalities are provided:
+1. Frequency bounded publish/subscribe using a multiplexer node
+2. Version checking for custom messages published on a topic
 
 # Installation
 Clone this repository in the `src` folder of your catkin workspace and run `catkin_make` from the root of the workspace.
@@ -13,7 +17,10 @@ $ catkin_make
 ```
 
 # Usage
-## Using rosrun
+
+## Multiplexer
+
+### Using rosrun
 The library provides the ```multiplexer``` executable to quickly start a multiplexer on a given topic. As an example, if you want to provide timed subscriptions to a std_msgs/String topic ```/test```  at 5,10,20,and 50 Hz just run
 ```bash
 $ rosrun backbone multiplexer --topic /test --message_type std_msgs/String --rates 5 10 20 50
@@ -22,7 +29,7 @@ This will create 4 new topics: **testRated5Hz**, **testRated10Hz**, **testRated2
 Please remeber to provide **positive** and **integer** values to **--rates**. RatedTopic expects them to also be sorted in ascended order and made of distinct values, but this script does that automatically.
 
 You can also setup multiple multiplexer of this nodes using ```roslaunch```, just remember to pass the required arguments **--topic** **--message_type** and **--rates**.
-## As a library
+### As a library
 Some example nodes can be found in the [`test_nodes`](https://github.com/unipi-smartapp-2021/KB-backbone/tree/main/test_nodes) folder, they offer a hint on how to use the classes exposed by this library.
 
 You can try such nodes with the launch files provided in [`launch`](https://github.com/unipi-smartapp-2021/KB-backbone/tree/main/launch) by running the following commands:
@@ -41,6 +48,21 @@ You can try such nodes with the launch files provided in [`launch`](https://gith
 
 A more detailed API reference is available in [USAGE.md](./USAGE.md).
 
+## Version Checking
+The library provides the  ```version_checker``` executable. THis executable needs tow parameter on the parameter servers to function:
+1. *version* is an integer indicating the current version constraint that each custom message defined must satisfy
+2. *VERSION_FIELD* is a string parameter that indicates the **name** of the field that each custom message must use to store the version value.
+
+To start the version checker run
+
+```bash
+$ rosrun backbone multiplexer --topic /test --message-type backbone/TestMsg
+```
+**N.B**: remeber to include the initial slash at the beginning of the topic name
+
+The ```--message-type``` flag is optional, if it is not set, the node will wait for the first message to be published on the topic to access informations about its type.
+
+You can also configure this node in a roslaunch file. Rememebr to load the two required parameters on the parameter server.
 # Docs
 
 We use **doxygen** to generate docs from comments in the source code. Run 
