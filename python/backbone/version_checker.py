@@ -8,19 +8,17 @@ class VersionChecker:
         self.msg_type = msg_type
         self.msg_class = roslib.message.get_message_class(self.msg_type)
         self.sub = rospy.Subscriber(
-            self.topic, self.msg_class, callback=self.check_version, queue_size=1
+            f"/{self.topic}", self.msg_class, callback=self.check_version, queue_size=1
         )
-        self.version = rospy.get_param(f"/{self.topic}_version")
-        self.version_field = rospy.get_param("VERSION_FIELD")
-
+        self.version = rospy.get_param(f"{self.topic}_version")
     def check_version(self, msg) -> None:
-        if self.version_field not in msg.__slots__:
+        if "version" not in msg.__slots__:
             raise WrongVersionException(
-                f"Field {self.version_field} not present in msg fields, please remember to include it"
+                f"Field version not present in msg fields, please remember to include it"
             )
-        elif getattr(msg, self.version_field) != self.version:
+        elif msg.version != self.version:
             raise WrongVersionException(
-                f"Got version {getattr(msg, self.version_field)}, expected {self.version}"
+                f"Got version {msg.version}, expected {self.version}"
             )
         else:
             return None
