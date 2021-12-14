@@ -61,9 +61,12 @@ To start the version checker run
 ```bash
 $ rosrun backbone multiplexer --topic test --message-type backbone/TestMsg
 ```
-**N.B**: do not put any slash at the start of the topic name, it is automatically included by the script
-
 The ```--message-type``` flag is optional, if it is not set, the node will wait for the first message to be published on the topic to access informations about its type.
+
+To see all the available flags run 
+```bash
+$ rosrun backbone multiplexer --help
+```
 
 You can also configure this node in a roslaunch file. Rememeber to load the required parameter on the parameter server.
 # Docs
