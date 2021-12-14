@@ -4,9 +4,13 @@ import argparse
 import rospy
 import rostopic
 
-
+def check_positive(value):
+    ival = int(value)
+    if ival <= 0:
+        raise argparse.ArgumentTypeError(f"Got {ival}, please provide a positive non zero value")
+    else:
+        return ival
 def main() -> int:
-    rospy.init_node(name="version_checker", anonymous=True)
     parser = argparse.ArgumentParser(
         description="Checks the version of the messages sent to a topic"
     )
@@ -26,7 +30,19 @@ def main() -> int:
         help="Type of messages that gets published on target topic",
         required=False,
     )
+    parser.add_argument(
+        "-r",
+        "--rate",
+        metavar="100",
+        type=check_positive,
+        default=1,
+        required=False,
+        help="Sets how many incosistent messages to wait  before logging the error (default: 1)"
+    )
     args = parser.parse_args()
+    
+    rospy.init_node(name="version_checker", anonymous=True)
+    
     ver = rospy.get_param(f"{args.topic}_version", None)
     if args.message_type:
         message_type = args.message_type
@@ -37,7 +53,7 @@ def main() -> int:
             f"please remember to setup the {args.topic}_version parameter on the master node "
         )
     else:
-        checker = VersionChecker(f"{args.topic}", args.message_type)
+        checker = VersionChecker(f"{args.topic}", args.message_type,args.rate)
         rospy.spin()
         return 0
 
