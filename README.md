@@ -59,7 +59,7 @@ $ rosparam set topic_version 1
 To start the version checker run
 
 ```bash
-$ rosrun backbone multiplexer --topic test --message-type backbone/TestMsg
+$ rosrun backbone version_checker --topic test --message-type backbone/TestMsg
 ```
 The ```--message-type``` flag is optional, if it is not set, the node will wait for the first message to be published on the topic to access informations about its type.
 
