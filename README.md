@@ -65,7 +65,7 @@ The ```--message-type``` flag is optional, if it is not set, the node will wait 
 
 To see all the available flags run 
 ```bash
-$ rosrun backbone multiplexer --help
+$ rosrun backbone version_checker --help
 ```
 
 You can also configure this node in a roslaunch file. Rememeber to load the required parameter on the parameter server.
